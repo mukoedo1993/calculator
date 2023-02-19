@@ -1,4 +1,4 @@
-<mark style="background-color: red">calculator project</mark>
+<span style="background-color: #FFFF00">Marked text</span>
 ```
 /Users/zichunwang/Qt/6.4.2/macos
 /Users/zichunwang/calculator
