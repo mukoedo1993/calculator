@@ -11,6 +11,8 @@ bool addTrigger = false;
 bool subTrigger = false;
 bool floatPointTrigger = false;
 bool isFloat = false;
+int leadingZeros = 0;
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -57,28 +59,61 @@ void MainWindow::NumPressed(){
     QPushButton *button = (QPushButton *)sender();
     QString butVal = button->text();
     QString displayVal = ui->Display->text();
+    QString newVal;
     if(isFloat){
-    if(floatPointTrigger == false)
+        if(leadingZeros > 0 && butVal.toDouble() != 0.0){
+            newVal.append(".");
+            ui->DisplayError->setText("leadingZeros >0");
+            for(int i = 0; i< leadingZeros; i++){
+                ui->DisplayError->setText("Line 89!");
+                newVal.append("0");
+            }
+            leadingZeros = 0;
+            newVal.append(butVal);
+            double dblNewVal = newVal.toDouble();
+            ui->Display->setText(QString::number(dblNewVal, 'g', 16));
+                    return;
+        }
+    if(floatPointTrigger == false && leadingZeros == 0)
     {
-     if((displayVal.toDouble() == 0) || (displayVal.toDouble() == 0.0)){
+     if((displayVal.toDouble() == 0.0 ||displayVal.toDouble() == 0)){
         ui->Display->setText(butVal);
      }
      else {
-        QString newVal = displayVal + butVal;
+        newVal = displayVal + butVal;
         double dblNewVal = newVal.toDouble();
         ui->Display->setText(QString::number(dblNewVal, 'g', 16));
 
         }
     }
     else{
-        ui->DisplayError->setText("Dot detected!");
+        //ui->DisplayError->setText("Dot detected!");
         floatPointTrigger = false;
         std::string ptr(".");
-        QString newVal = displayVal + QString::fromStdString(ptr) + butVal;
+        QString newVal;
+        if(butVal.toDouble() == 0.0 ||butVal.toDouble() == 0){
+            leadingZeros ++;
+            ui->DisplayError->setText(QString::number(leadingZeros).append( " line 83 of leading zeros!"));
+            newVal = displayVal + QString::fromStdString(ptr) + butVal;
+        }
+        else{
+            newVal = displayVal + QString::fromStdString(ptr);
+
+            for(int i = 0; i< leadingZeros; i++){
+                ui->DisplayError->setText("Line 89!");
+                newVal.append("0");
+            }
+            newVal.append(butVal);
+            leadingZeros = 0;
+            //ui->DisplayError->setText("line 93!");
+
+        }
+        //ui->DisplayError->setText("Line 96!");
         double dblNewVal = newVal.toDouble();
         ui->Display->setText(QString::number(dblNewVal, 'g', 16));
     }
     }
+
     else /*not float*/
     {
          if(displayVal.toInt() == 0 ){
@@ -101,6 +136,7 @@ void MainWindow::MathButtonPressed(){
      addTrigger = false;
      subTrigger = false;
      floatPointTrigger = false;
+     leadingZeros = 0;
     QString displayVal = ui->Display->text();
     calcVal = displayVal.toDouble();
     calcValInt = displayVal.toInt();
@@ -147,6 +183,10 @@ void MainWindow::EqualButton(){
             }
             solution = calcVal / dblDisplayVal;
         }
+       addTrigger = subTrigger = mutliTrigger = divTrigger = false;
+     } else{
+          ui->DisplayError->setText("Please perform calculation before try to finish!");
+          ClearEverything();
      }
     }
     else/*not float*/ {
@@ -170,6 +210,10 @@ void MainWindow::EqualButton(){
 
                 solution_int = calcValInt / intDisplayVal;
             }
+             addTrigger = subTrigger = mutliTrigger = divTrigger = false;
+         }else {
+             ui->DisplayError->setText("Please perform calculation before try to finish!");
+             ClearEverything();
          }
 
     }
@@ -210,6 +254,7 @@ void MainWindow::FloatPointPressed() {
 
 void MainWindow::ClearEverything() {
     ui->Display->setText("0");
+    leadingZeros = 0;
 
 }
 
