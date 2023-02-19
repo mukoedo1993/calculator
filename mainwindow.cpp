@@ -59,61 +59,21 @@ void MainWindow::NumPressed(){
     QPushButton *button = (QPushButton *)sender();
     QString butVal = button->text();
     QString displayVal = ui->Display->text();
-    QString newVal;
+
     if(isFloat){
-        if(leadingZeros > 0 && butVal.toDouble() != 0.0){
-            newVal.append(".");
-            ui->DisplayError->setText("leadingZeros >0");
-            for(int i = 0; i< leadingZeros; i++){
-                ui->DisplayError->setText("Line 89!");
-                newVal.append("0");
-            }
-            leadingZeros = 0;
-            newVal.append(butVal);
-            double dblNewVal = newVal.toDouble();
-            ui->Display->setText(QString::number(dblNewVal, 'g', 16));
-                    return;
+        if(displayVal.toStdString() == "0"){
+            ui->Display->setText(butVal);
         }
-    if(floatPointTrigger == false && leadingZeros == 0)
-    {
-     if((displayVal.toDouble() == 0.0 ||displayVal.toDouble() == 0)){
-        ui->Display->setText(butVal);
-     }
-     else {
-        newVal = displayVal + butVal;
-        double dblNewVal = newVal.toDouble();
-        ui->Display->setText(QString::number(dblNewVal, 'g', 16));
+        else if(displayVal.toDouble() == 0.0 ){
+           ui->Display->setText(displayVal.append(butVal));
+        }
+        else {
+           QString newVal = displayVal + butVal;
 
-        }
+           ui->Display->setText(newVal);
+
+           }
     }
-    else{
-        //ui->DisplayError->setText("Dot detected!");
-        floatPointTrigger = false;
-        std::string ptr(".");
-        QString newVal;
-        if(butVal.toDouble() == 0.0 ||butVal.toDouble() == 0){
-            leadingZeros ++;
-            ui->DisplayError->setText(QString::number(leadingZeros).append( " line 83 of leading zeros!"));
-            newVal = displayVal + QString::fromStdString(ptr) + butVal;
-        }
-        else{
-            newVal = displayVal + QString::fromStdString(ptr);
-
-            for(int i = 0; i< leadingZeros; i++){
-                ui->DisplayError->setText("Line 89!");
-                newVal.append("0");
-            }
-            newVal.append(butVal);
-            leadingZeros = 0;
-            //ui->DisplayError->setText("line 93!");
-
-        }
-        //ui->DisplayError->setText("Line 96!");
-        double dblNewVal = newVal.toDouble();
-        ui->Display->setText(QString::number(dblNewVal, 'g', 16));
-    }
-    }
-
     else /*not float*/
     {
          if(displayVal.toInt() == 0 ){
@@ -237,18 +197,14 @@ void MainWindow::ChangeNumberSign(){
 void MainWindow::FloatPointPressed() {
     //QPushButton *button = (QPushButton *)sender();
     if(!isFloat)return;
-    floatPointTrigger = true;
+    //floatPointTrigger = true;
     QString displayVal = ui->Display->text();
-    std::string reg("[\.]{1}");
 
-    if(std::regex_match(displayVal.toStdString(), std::regex(reg))){
-        floatPointTrigger = false;
-        ui->DisplayError->setText("Float Point Detected!");
-        return;
-    }
-    else {
-        ui->DisplayError->setText("");
-    }
+
+
+
+        displayVal.append(".");
+        ui->Display->setText(displayVal);
 
 }
 
