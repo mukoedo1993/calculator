@@ -1,6 +1,6 @@
 # Calculator Zichun Wang #
 ## What to do for average computer users? ##
-
+calculator.app.zip. Unzip it and use it on macos. It should work.
 
 ## What to do? for ordinary developers. Follow the following steps on terminal:##
 ```
