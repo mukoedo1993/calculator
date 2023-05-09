@@ -1,4 +1,9 @@
 # Calculator Zichun Wang #
+## What is this project for? ##
+I followed a youtube tutorial for this. But I add a switch function so that you can switch between int and float 
+to enhance the saving of potential memory resources as required by CS309 course(software engineering).
+
+
 ## What to do for average computer users? ##
 calculator.app.zip. Unzip it and use it on macos. It should work.
 
